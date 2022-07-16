@@ -8,6 +8,7 @@ export const getTodosAsync = createAsyncThunk(
     const responce = await fetch(api);
     if (responce.ok) {
       const todos = await responce.json();
+      console.log(`#####: todos = ${todos} `);
       return { todos };
     }
   }
@@ -62,37 +63,42 @@ export const deleteTodoAsync = createAsyncThunk(
 
 export const todoSlice = createSlice({
   name: 'todos',
-  initialState: [],
-  reducers: {
-    addTodo: (state, action) => {
-      const newTodo = {
-        id: Date.now(),
-        title: action.payload.title,
-        completed: false,
-      };
-      state.push(newTodo);
-    },
-    toggleComplete: (state, action) => {
-      const index = state.findIndex((todo) => todo.id === action.payload.id);
-      state[index].completed = action.payload.completed;
-    },
-    deleteTodo: (state, action) => {
-      return state.filter((todo) => todo.id !== action.payload.id);
-    },
+  initialState: {
+    status: 'idle',
+    entries: [],
   },
+  reducers: {},
   extraReducers: {
+    [getTodosAsync.pending]: (state, action) => {
+      state.status = 'pending';
+    },
     [getTodosAsync.fulfilled]: (state, action) => {
-      return action.payload.todos;
+      state.status = 'resolved';
+      state.entries = action.payload.todos;
+    },
+    [addTodoAsync.pending]: (state, action) => {
+      state.status = 'pending';
     },
     [addTodoAsync.fulfilled]: (state, action) => {
-      state.push(action.payload.todo);
+      state.entries.push(action.payload.todo);
+      state.status = 'resolved';
+    },
+    [toggleCompleteAsync.pending]: (state, action) => {
+      state.status = 'pending';
     },
     [toggleCompleteAsync.fulfilled]: (state, action) => {
-      const index = state.findIndex((todo) => todo.id === action.payload.id);
-      state[index].completed = action.payload.completed;
+      const index = state.entries.findIndex(
+        (todo) => todo.id === action.payload.id
+      );
+      state.entries[index].completed = action.payload.completed;
+      state.status = 'resolved';
+    },
+    [deleteTodoAsync.pending]: (state, action) => {
+      state.status = 'pending';
     },
     [deleteTodoAsync.fulfilled]: (state, action) => {
-      return action.payload.todos;
+      state.status = 'resolved';
+      state.entries = action.payload.todos;
     },
   },
 });
