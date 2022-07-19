@@ -4,12 +4,12 @@ Source code for React redux todo app.
 
 # Running server
 
-npm run server
+`npm run server`
 
 # Running client
 
-npm run client
+`npm run client`
 
-# Running server and client for development
+# Running server and client both for development
 
-npm run dev
+`npm run dev`
