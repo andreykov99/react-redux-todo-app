@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from 'react-redux';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authService from './authService';
 
 const user = JSON.parse(localStorage.getItem('user'));
@@ -79,4 +79,5 @@ export const authSlice = createSlice({
   },
 });
 
+export const { reset } = authSlice.actions;
 export default authSlice.reducer;
