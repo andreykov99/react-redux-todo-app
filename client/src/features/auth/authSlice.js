@@ -52,7 +52,7 @@ export const authSlice = createSlice({
     [register.pending]: (state, action) => {
       state.status = 'pending';
     },
-    [register.fulfiled]: (state, action) => {
+    [register.fulfilled]: (state, action) => {
       state.status = 'resolved';
       state.user = action.payload;
     },
@@ -64,7 +64,7 @@ export const authSlice = createSlice({
     [login.pending]: (state, action) => {
       state.status = 'pending';
     },
-    [login.fulfiled]: (state, action) => {
+    [login.fulfilled]: (state, action) => {
       state.status = 'resolved';
       state.user = action.payload;
     },
@@ -73,7 +73,7 @@ export const authSlice = createSlice({
       state.message = action.payload;
       state.user = null;
     },
-    [logout.fulfiled]: (state, action) => {
+    [logout.fulfilled]: (state, action) => {
       state.user = null;
     },
   },

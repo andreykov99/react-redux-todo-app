@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-const api = 'http://localhost:7000/todos';
+const api = 'http://localhost:5000/todos';
 
 export const getTodosAsync = createAsyncThunk(
   'todos/getTodosAsync',
