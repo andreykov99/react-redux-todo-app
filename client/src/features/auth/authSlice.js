@@ -46,7 +46,11 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    reset: (state) => initialState,
+    reset: (state) => ({
+      user: null,
+      status: 'idle',
+      message: '',
+    }),
   },
   extraReducers: {
     [register.pending]: (state, action) => {

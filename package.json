@@ -4,7 +4,8 @@
   "description": "Source code for React redux todo app.",
   "main": "index.js",
   "scripts": {
-    "server": "node ./server/server.js",
+    "start": "node ./server/server.js",
+    "server": "nodemon ./server/server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
