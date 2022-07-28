@@ -19,9 +19,9 @@ const Header = () => {
   return (
     <header className="navbar navbar-expand-lg bg-light">
       <div className="container">
-        <div className="navbar-brand">
-          <Link to="/">TodoApp</Link>
-        </div>
+        <Link to="/" className="navbar-brand">
+          TodoApp
+        </Link>
         <ul className="navbar-nav">
           {user ? (
             <li className="nav-item">
@@ -32,12 +32,12 @@ const Header = () => {
           ) : (
             <>
               <li className="nav-item">
-                <Link to="/login">
+                <Link to="/login" className="nav-link">
                   <FaSignInAlt /> Login
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/register">
+                <Link to="/register" className="nav-link">
                   <FaUser /> Register
                 </Link>
               </li>

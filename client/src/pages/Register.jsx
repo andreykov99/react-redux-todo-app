@@ -62,16 +62,18 @@ const Register = () => {
   }
 
   return (
-    <>
-      <section className="heading container">
-        <h1>
-          <FaUser /> Register
-        </h1>
-        <p>Please create an account</p>
+    <div className="container">
+      <section className="row justify-content-center">
+        <div className="col-md-6">
+          <h1>
+            <FaUser /> Register
+          </h1>
+          <p>Please create an account</p>
+        </div>
       </section>
 
-      <section className="form container">
-        <form onSubmit={onSubmit} className="col-6">
+      <section className="row justify-content-center">
+        <form onSubmit={onSubmit} className="col-md-6">
           <div className="form-floating mb-3">
             <input
               type="text"
@@ -127,7 +129,7 @@ const Register = () => {
           </div>
         </form>
       </section>
-    </>
+    </div>
   );
 };
 

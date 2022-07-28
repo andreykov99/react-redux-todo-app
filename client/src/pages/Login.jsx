@@ -53,16 +53,18 @@ const Login = () => {
   }
 
   return (
-    <>
-      <section className="heading container">
-        <h1>
-          <FaSignInAlt /> Login
-        </h1>
-        <p>Login and start ToDo</p>
+    <div className="container">
+      <section className="row justify-content-center">
+        <div className="col-md-6">
+          <h1>
+            <FaSignInAlt /> Login
+          </h1>
+          <p>Login and start ToDo</p>
+        </div>
       </section>
 
-      <section className="form container">
-        <form onSubmit={onSubmit} className="form-floating col-6">
+      <section className="row justify-content-center">
+        <form onSubmit={onSubmit} className="form-floating col-md-6">
           <div className="form-floating mb-3">
             <input
               type="email"
@@ -95,7 +97,7 @@ const Login = () => {
           </div>
         </form>
       </section>
-    </>
+    </div>
   );
 };
 
