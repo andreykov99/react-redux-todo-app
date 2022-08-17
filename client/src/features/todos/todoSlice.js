@@ -1,15 +1,21 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import todoService from './todoService';
 
 const api = 'http://localhost:5000/todos';
 
 export const getTodosAsync = createAsyncThunk(
   'todos/getTodosAsync',
-  async () => {
-    const responce = await fetch(api);
-    if (responce.ok) {
-      const todos = await responce.json();
-      console.log(`#####: todos = ${todos} `);
-      return { todos };
+  async (thunkAPI) => {
+    try {
+      return todoService.getTodos();
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -74,7 +80,7 @@ export const todoSlice = createSlice({
     },
     [getTodosAsync.fulfilled]: (state, action) => {
       state.status = 'resolved';
-      state.entries = action.payload.todos;
+      state.entries = action.payload;
     },
     [addTodoAsync.pending]: (state, action) => {
       state.status = 'pending';
