@@ -1,8 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import todoService from './todoService';
 
-const api = 'http://localhost:5000/todos';
-
 export const getTodosAsync = createAsyncThunk(
   'todos/getTodosAsync',
   async (thunkAPI) => {
@@ -22,47 +20,51 @@ export const getTodosAsync = createAsyncThunk(
 
 export const addTodoAsync = createAsyncThunk(
   'todos/addTodoAsync',
-  async (payload) => {
-    const responce = await fetch(api, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        title: payload.title,
-      }),
-    });
-    if (responce.ok) {
-      const todo = await responce.json();
-      return { todo };
+  async (todo, thunkAPI) => {
+    try {
+      return todoService.addTodo(todo);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
 export const toggleCompleteAsync = createAsyncThunk(
   'todos/toggleCompleteAsync',
-  async (payload) => {
-    const responce = await fetch(`${api}/${payload.id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        completed: payload.completed,
-      }),
-    });
-    if (responce.ok) {
-      const todo = await responce.json();
-      return { id: todo.id, completed: todo.completed };
+  async (todo, thunkAPI) => {
+    try {
+      return todoService.toggleComplete(todo);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
 export const deleteTodoAsync = createAsyncThunk(
   'todos/deleteTodoAsync',
-  async (payload) => {
-    const responce = await fetch(`${api}/${payload.id}`, {
-      method: 'DELETE',
-    });
-    if (responce.ok) {
-      const todos = await responce.json();
-      return { todos };
+  async (todo, thunkAPI) => {
+    try {
+      return todoService.deleteTodo(todo);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -86,7 +88,7 @@ export const todoSlice = createSlice({
       state.status = 'pending';
     },
     [addTodoAsync.fulfilled]: (state, action) => {
-      state.entries.push(action.payload.todo);
+      state.entries.push(action.payload);
       state.status = 'resolved';
     },
     [toggleCompleteAsync.pending]: (state, action) => {
@@ -94,7 +96,7 @@ export const todoSlice = createSlice({
     },
     [toggleCompleteAsync.fulfilled]: (state, action) => {
       const index = state.entries.findIndex(
-        (todo) => todo.id === action.payload.id
+        (todo) => todo._id === action.payload._id
       );
       state.entries[index].completed = action.payload.completed;
       state.status = 'resolved';
@@ -104,7 +106,9 @@ export const todoSlice = createSlice({
     },
     [deleteTodoAsync.fulfilled]: (state, action) => {
       state.status = 'resolved';
-      state.entries = action.payload.todos;
+      state.entries = state.entries.filter(
+        (todo) => todo._id !== action.payload.id
+      );
     },
   },
 });

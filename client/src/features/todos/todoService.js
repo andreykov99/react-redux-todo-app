@@ -23,19 +23,40 @@ const getTodos = async () => {
 };
 
 // Add new todo
-const addTodo = async () => {};
+const addTodo = async ({ title }) => {
+  const response = await axios.post(
+    API_URL,
+    { title },
+    { headers: authHeader() }
+  );
+  return response.data;
+};
 
 // Toggle todo completed
-const toggleComplete = async () => {};
+const toggleComplete = async ({ id, completed }) => {
+  const response = await axios.patch(
+    `${API_URL}${id}`,
+    { completed },
+    {
+      headers: authHeader(),
+    }
+  );
+  return response.data;
+};
 
 // Delete todo
-const delTodo = async () => {};
+const deleteTodo = async ({ id }) => {
+  const response = await axios.delete(`${API_URL}${id}`, {
+    headers: authHeader(),
+  });
+  return response.data;
+};
 
 const todoService = {
   getTodos,
   addTodo,
   toggleComplete,
-  delTodo,
+  deleteTodo,
 };
 
 export default todoService;
