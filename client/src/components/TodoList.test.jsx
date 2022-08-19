@@ -9,7 +9,7 @@ const mockedDispatch = jest.spyOn(reduxHooks, 'useDispatch');
 describe('TodoList component', () => {
   it('should be rendered with todos', () => {
     mockedSelector.mockReturnValue([
-      { id: '123', title: 'Todo1', completed: false },
+      { _id: '123', title: 'Todo1', completed: false },
     ]);
     const dispatch = jest.fn();
     mockedDispatch.mockReturnValue(dispatch);

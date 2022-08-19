@@ -120,15 +120,15 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
-      <ul
-        class="list-group"
-      />
+      <h3>
+        You have not set any todos
+      </h3>
     </div>
   </body>,
   "container": <div>
-    <ul
-      class="list-group"
-    />
+    <h3>
+      You have not set any todos
+    </h3>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],

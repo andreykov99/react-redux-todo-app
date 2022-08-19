@@ -12,11 +12,17 @@ const TodoList = () => {
   }, [dispatch]);
 
   return (
-    <ul className="list-group">
-      {todos.map(({ _id: id, title, completed }) => (
-        <TodoItem key={id} id={id} title={title} completed={completed} />
-      ))}
-    </ul>
+    <>
+      {todos.length > 0 ? (
+        <ul className="list-group">
+          {todos.map(({ _id: id, title, completed }) => (
+            <TodoItem key={id} id={id} title={title} completed={completed} />
+          ))}
+        </ul>
+      ) : (
+        <h3>You have not set any todos</h3>
+      )}
+    </>
   );
 };
 
