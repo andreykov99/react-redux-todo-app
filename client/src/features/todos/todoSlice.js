@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import todoService from './todoService';
-import EventBus from '../common/EventBus';
+import EventBus from '../../common/EventBus';
 
 export const getTodosAsync = createAsyncThunk(
   'todos/getTodosAsync',
