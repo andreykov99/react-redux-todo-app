@@ -46,15 +46,16 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    reset: (state) => ({
+    reset: () => ({
       user: null,
       status: 'idle',
       message: '',
     }),
   },
   extraReducers: {
-    [register.pending]: (state, action) => {
+    [register.pending]: (state) => {
       state.status = 'pending';
+      state.message = '';
     },
     [register.fulfilled]: (state, action) => {
       state.status = 'resolved';
@@ -65,8 +66,9 @@ export const authSlice = createSlice({
       state.message = action.payload;
       state.user = null;
     },
-    [login.pending]: (state, action) => {
+    [login.pending]: (state) => {
       state.status = 'pending';
+      state.message = '';
     },
     [login.fulfilled]: (state, action) => {
       state.status = 'resolved';
@@ -79,6 +81,7 @@ export const authSlice = createSlice({
     },
     [logout.fulfilled]: (state, action) => {
       state.user = null;
+      state.message = '';
     },
   },
 });

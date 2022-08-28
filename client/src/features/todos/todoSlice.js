@@ -2,22 +2,24 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import todoService from './todoService';
 import EventBus from '../../common/EventBus';
 
+const getErrorMessage = (error) => {
+  if (error.response && error.response.status === 401) {
+    EventBus.dispatch('logout');
+  }
+  return (
+    (error.response && error.response.data && error.response.data.message) ||
+    error.message ||
+    error.toString()
+  );
+};
+
 export const getTodosAsync = createAsyncThunk(
   'todos/getTodosAsync',
   async (thunkAPI) => {
     try {
       return await todoService.getTodos();
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      if (error.response && error.response.status === 401) {
-        EventBus.dispatch('logout');
-      }
-      return thunkAPI.rejectWithValue(message);
+      return thunkAPI.rejectWithValue(getErrorMessage(error));
     }
   }
 );
@@ -28,13 +30,7 @@ export const addTodoAsync = createAsyncThunk(
     try {
       return await todoService.addTodo(todo);
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
+      return thunkAPI.rejectWithValue(getErrorMessage(error));
     }
   }
 );
@@ -45,13 +41,7 @@ export const toggleCompleteAsync = createAsyncThunk(
     try {
       return await todoService.toggleComplete(todo);
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
+      return thunkAPI.rejectWithValue(getErrorMessage(error));
     }
   }
 );
@@ -62,13 +52,7 @@ export const deleteTodoAsync = createAsyncThunk(
     try {
       return await todoService.deleteTodo(todo);
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
+      return thunkAPI.rejectWithValue(getErrorMessage(error));
     }
   }
 );
@@ -80,10 +64,10 @@ export const todoSlice = createSlice({
     entries: [],
   },
   reducers: {
-    reset: (state) => ({ status: 'idle', entries: [] }),
+    reset: () => ({ status: 'idle', entries: [] }),
   },
   extraReducers: {
-    [getTodosAsync.pending]: (state, action) => {
+    [getTodosAsync.pending]: (state) => {
       state.status = 'pending';
     },
     [getTodosAsync.rejected]: (state, action) => {
@@ -94,7 +78,7 @@ export const todoSlice = createSlice({
       state.status = 'resolved';
       state.entries = action.payload;
     },
-    [addTodoAsync.pending]: (state, action) => {
+    [addTodoAsync.pending]: (state) => {
       state.status = 'pending';
     },
     [addTodoAsync.rejected]: (state, action) => {
@@ -105,7 +89,7 @@ export const todoSlice = createSlice({
       state.entries.push(action.payload);
       state.status = 'resolved';
     },
-    [toggleCompleteAsync.pending]: (state, action) => {
+    [toggleCompleteAsync.pending]: (state) => {
       state.status = 'pending';
     },
     [toggleCompleteAsync.rejected]: (state, action) => {
@@ -119,7 +103,7 @@ export const todoSlice = createSlice({
       state.entries[index].completed = action.payload.completed;
       state.status = 'resolved';
     },
-    [deleteTodoAsync.pending]: (state, action) => {
+    [deleteTodoAsync.pending]: (state) => {
       state.status = 'pending';
     },
     [deleteTodoAsync.rejected]: (state, action) => {
